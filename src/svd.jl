@@ -26,7 +26,7 @@ function svdIter!(
     shift,
     U = nothing,
     Vᴴ = nothing,
-) where {T<:Real}
+) where {T<:Number}
 
     if B.uplo === 'U'
 
@@ -84,7 +84,7 @@ function svdDemmelKahan!(
     n2,
     U = nothing,
     Vᴴ = nothing,
-) where {T<:Real}
+) where {T<:Number}
 
     if B.uplo === 'U'
 
@@ -158,7 +158,7 @@ function __svd!(
     U = nothing,
     Vᴴ = nothing;
     tol = 100eps(T),
-) where {T<:Real}
+) where {T<:Number}
 
     n = size(B, 1)
     if n == 0
@@ -253,7 +253,7 @@ function __svd!(
     end
 end
 
-function _svdvals!(B::Bidiagonal{T}; tol = eps(T)) where {T<:Real}
+function _svdvals!(B::Bidiagonal{T}; tol = eps(T)) where {T<:Number}
     __svd!(B, tol = tol)
     return sort(abs.(diag(B)), rev = true)
 end
@@ -283,7 +283,7 @@ function _sort_and_adjust!(U, s, Vᴴ)
     return nothing
 end
 
-function _svd!(B::Bidiagonal{T}; tol = eps(T)) where {T<:Real}
+function _svd!(B::Bidiagonal{T}; tol = eps(T)) where {T<:Number}
     n = size(B, 1)
 
     U = Matrix{T}(I, n, n)
@@ -541,7 +541,7 @@ end
 
 # Overload LinearAlgebra methods
 
-LinearAlgebra.svdvals!(B::Bidiagonal{T}; tol = eps(T)) where {T<:Real} =
+LinearAlgebra.svdvals!(B::Bidiagonal{T}; tol = eps(T)) where {T<:Number} =
     _svdvals!(B, tol = tol)
 
 """
@@ -580,7 +580,7 @@ LinearAlgebra.svd!(
     # To avoid breaking on <Julia 1.3, the `alg` keyword doesn't do anything. Once we drop support for Julia 1.2
     # and below, we can make the keyword argument work correctly
     alg = nothing,
-) where {T<:Real} = _svd!(B, tol = tol)
+) where {T<:Number} = _svd!(B, tol = tol)
 
 """
     svd!(A[, tol, full])::SVD
