@@ -211,7 +211,7 @@ function singleShiftQR!(
             HH[i+3, i+1] = 0
         end
         rmul!(view(HH, 1:min(i + 3, iend), :), G')
-        # mul!(G, τ)
+        lmul!(G, τ)
     end
     return HH
 end
@@ -272,7 +272,7 @@ function doubleShiftQR!(
                 HH[i+4, i+j] = 0
             end
             rmul!(view(HH, 1:min(i + j + 2, iend), :), G')
-            # mul!(G, τ)
+            lmul!(G, τ)
         end
     end
     return HH
