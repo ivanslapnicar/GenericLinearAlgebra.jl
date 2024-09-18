@@ -158,7 +158,7 @@ function _schur!(
             =#
             # Just use the standard shift
             Hmm=HH[iend,iend]
-            d=conj(Hmm)*Hmm
+            d=conj(Hmm)*Hmm                     
             t=conj(Hmm)+Hmm
             @debug "block start is, block end, d, and t" istart iend d t
 
@@ -247,7 +247,9 @@ function doubleShiftQR!(
     end
     G1, r = givens(
         H11 * H11 + HH[istart, istart+1] * H21 - shiftTrace * H11 + shiftDeterminant,
-        H21 * (H11 + HH[istart+1, istart+1] - shiftTrace),
+        # H21 * (H11 + HH[istart+1, istart+1] - shiftTrace),
+        # Due to noncommutativity
+        H21 * (H11 - shiftTrace) + HH[istart+1, istart+1]*H21,
         istart,
         istart + 1,
     )
