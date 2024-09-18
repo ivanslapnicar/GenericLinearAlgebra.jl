@@ -142,6 +142,8 @@ function _schur!(
             # run a QR iteration
             # shift method is specified with shiftmethod kw argument
         else
+            # Skip all this
+            #=
             Hmm = HH[iend, iend]
             Hm1m1 = HH[iend-1, iend-1]
             if iszero(i % 10)
@@ -153,6 +155,11 @@ function _schur!(
                 d = Hm1m1 * Hmm - HH[iend, iend-1] * HH[iend-1, iend]
                 t = Hm1m1 + Hmm
             end
+            =#
+            # Just use the standard shift
+            Hmm=HH[iend,iend]
+            d=conj(Hmm)*Hmm
+            t=conj(Hmm)+Hmm
             @debug "block start is, block end, d, and t" istart iend d t
 
             if shiftmethod == :Francis
