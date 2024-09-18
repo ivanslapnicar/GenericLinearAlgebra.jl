@@ -253,7 +253,8 @@ function doubleShiftQR!(
         istart,
         istart + 1,
     )
-    G2, _ = givens(r, H21 * HH[istart+2, istart+1], istart, istart + 2)
+    # Due to noncommutativitiy
+    G2, _ = givens(r, HH[istart+2, istart+1]*H21, istart, istart + 2)
     vHH = view(HH, :, istart:m)
     lmul!(G1, vHH)
     lmul!(G2, vHH)
