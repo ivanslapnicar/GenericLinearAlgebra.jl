@@ -137,8 +137,7 @@ function _schur!(
             # and the same for a 2x2 block
         elseif istart + 1 == iend
             @debug "Bottom deflation! Block size is two. New iend is" iend - 2
-            
-            # doubleShiftQR!(HH, τ, t, d, istart, iend)
+ 
             iend -= 2
             # run a QR iteration
             # shift method is specified with shiftmethod kw argument
@@ -184,7 +183,8 @@ function _schur!(
             break
         end
     end
-
+    # @debug abs.(HH)
+    doubleShiftQR2!(HH, τ, 1,2,tol)
     return Schur{T,typeof(HH)}(HH, τ)
 end
 _schur!(A::StridedMatrix; kwargs...) = _schur!(_hessenberg!(A); kwargs...)
@@ -233,6 +233,7 @@ function doubleShiftQR!(
     iend::Integer,
 )
     m = size(HH, 1)
+
     H11 = HH[istart, istart]
     H21 = HH[istart+1, istart]
     Htmp11 = HH[istart+2, istart]
@@ -285,6 +286,40 @@ function doubleShiftQR!(
             rmul!(view(HH, 1:min(i + j + 2, iend), :), G')
             lmul!(G, τ)
         end
+    end
+    return HH
+end
+
+function doubleShiftQR2!(
+    HH::StridedMatrix,
+    τ::Rotation,
+    istart::Integer,
+    iend::Integer,
+    tol
+)
+    m = size(HH, 1)   
+    iter=0
+    while abs(HH[istart+1, istart])>tol*(abs(HH[istart, istart])+abs(HH[istart+1, istart+1])) && iter<10
+        iter+=1
+    H11 = HH[istart, istart]
+    H21 = HH[istart+1, istart]
+    # Just use the standard shift
+    Hmm=HH[iend,iend]
+    shiftDeterminant=conj(Hmm)*Hmm                     
+    shiftTrace=conj(Hmm)+Hmm
+    G1, r = givens(
+        H11 * H11 + HH[istart, istart+1] * H21 - shiftTrace * H11 + shiftDeterminant,
+        # H21 * (H11 + HH[istart+1, istart+1] - shiftTrace),
+        # Due to noncommutativity
+        H21 * (H11 - shiftTrace) + HH[istart+1, istart+1]*H21,
+        istart,
+        istart + 1,
+    )
+    # Due to noncommutativitiy
+    lmul!(G1, HH)
+    vHH = view(HH, 1:2, :)
+    rmul!(vHH, G1')
+    lmul!(G1, τ)
     end
     return HH
 end
