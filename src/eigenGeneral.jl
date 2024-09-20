@@ -180,7 +180,7 @@ function _schur!(
                 )
             end
         end
-        if iend <= 2
+        if iend <= 1
             break
         end
     end
