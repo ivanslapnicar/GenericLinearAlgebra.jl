@@ -137,8 +137,9 @@ function _schur!(
             # and the same for a 2x2 block
         elseif istart + 1 == iend
             @debug "Bottom deflation! Block size is two. New iend is" iend - 2
+            
+            doubleShiftQR!(HH, τ, t, d, istart, iend)
             iend -= 2
-
             # run a QR iteration
             # shift method is specified with shiftmethod kw argument
         else
