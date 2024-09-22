@@ -171,7 +171,7 @@ function __svd!(
     e = B.ev
     iteration = 0
 
-    thresh = tol * zero(first(d))
+    thresh = tol * abs(zero(first(d)))
 
     if B.uplo === 'U'
         while true
