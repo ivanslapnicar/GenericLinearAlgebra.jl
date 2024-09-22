@@ -184,7 +184,7 @@ function _schur!(
         end
     end
     # @debug abs.(HH)
-    doubleShiftQR2!(HH, τ, 1,2,tol)
+    # doubleShiftQR2!(HH, τ, 1,2,tol)
     return Schur{T,typeof(HH)}(HH, τ)
 end
 _schur!(A::StridedMatrix; kwargs...) = _schur!(_hessenberg!(A); kwargs...)
