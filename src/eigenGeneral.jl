@@ -183,8 +183,6 @@ function _schur!(
             break
         end
     end
-    # @debug abs.(HH)
-    # doubleShiftQR2!(HH, τ, 1,2,tol)
     return Schur{T,typeof(HH)}(HH, τ)
 end
 _schur!(A::StridedMatrix; kwargs...) = _schur!(_hessenberg!(A); kwargs...)
@@ -289,7 +287,6 @@ function doubleShiftQR!(
     end
     return HH
 end
-
 
 _eigvals!(A::StridedMatrix; kwargs...) = _eigvals!(_schur!(A; kwargs...))
 _eigvals!(H::HessenbergMatrix; kwargs...) = _eigvals!(_schur!(H; kwargs...))
