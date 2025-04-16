@@ -34,7 +34,7 @@ using Test, GenericLinearAlgebra, LinearAlgebra, Quaternions
     end
 
     @testset "(full) Symmetric" for uplo in (:L, :U)
-        A = Hermitian(big.(randn(n, n)), uplo)
+        A = Symmetric(big.(randn(n, n)), uplo)
         vals, vecs = eigen(A)
         @testset "default" begin
             @test vecs' * A * vecs ≈ diagm(0 => vals)
@@ -162,6 +162,13 @@ using Test, GenericLinearAlgebra, LinearAlgebra, Quaternions
             A = Hermitian(Diagonal([1.0, 2.0]))
             @test eigvals(A) == diag(A)
             @test eigen(A).values == diag(A)
+        end
+    end
+
+    if VERSION >= v"1.11"
+        @testset "Method ambiguity in eigen with Julia 1.11 #141" begin
+            M = Hermitian(Tridiagonal(ones(ComplexF64, 2), ones(ComplexF64, 3), ones(ComplexF64, 2)))
+            @test eigen(M).values ≈ Float64.(eigen(big.(M)).values)
         end
     end
 end
