@@ -158,7 +158,7 @@ function __svd!(
     U = nothing,
     Vᴴ = nothing;
     tol = 100eps(T),
-) where {T<:Real}
+) where {T<:Number}
 
     n = size(B, 1)
     if n == 0
