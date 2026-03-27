@@ -26,7 +26,7 @@ function svdIter!(
     shift,
     U = nothing,
     Vᴴ = nothing,
-) where {T<:Real}
+) where {T<:Number}
 
     if B.uplo === 'U'
 
