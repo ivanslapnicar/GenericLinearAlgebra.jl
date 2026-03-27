@@ -171,7 +171,7 @@ function __svd!(
     e = B.ev
     iteration = 0
 
-    thresh = tol * zero(first(d))
+    thresh = tol * zero(tol) # zero(first(d))
 
     if B.uplo === 'U'
         while true
@@ -183,7 +183,6 @@ function __svd!(
                     # We are done!
                     return nothing
                 else
-                    println(e[n2i-1]," ",abs(e[n2i-1])," ", thresh)
                     if abs(e[n2i-1]) > thresh
                         n2 = n2i
                         break
