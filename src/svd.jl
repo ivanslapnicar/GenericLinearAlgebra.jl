@@ -183,6 +183,7 @@ function __svd!(
                     # We are done!
                     return nothing
                 else
+                    println(e[n2i-1]," ",abs(e[n2i-1])," ", thresh)
                     if abs(e[n2i-1]) > thresh
                         n2 = n2i
                         break
