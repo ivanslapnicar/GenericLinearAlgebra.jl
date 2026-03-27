@@ -300,7 +300,7 @@ function _lower_to_upper!(B::Bidiagonal, U::Matrix)
     return Bidiagonal(B.dv, B.ev, :U)
 end
 
-function _svd!(B::Bidiagonal{T}; tol = eps(T)) where {T<:Real}
+function _svd!(B::Bidiagonal{T}; tol = eps(T)) where {T<:Number}
     n = size(B, 1)
 
     U = Matrix{T}(I, n, n)
