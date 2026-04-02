@@ -84,7 +84,7 @@ function svdDemmelKahan!(
     n2,
     U = nothing,
     Vᴴ = nothing,
-) where {T<:Real}
+) where {T<:Number}
 
     if B.uplo === 'U'
 
