@@ -160,7 +160,7 @@ function eig2x2!(d::StridedVector, e::StridedVector, j::Integer, vectors::Matrix
     return c, s
 end
 
-function eigvalsPWK!(S::SymTridiagonal{T}; tol = eps(T)) where {T<:Real}
+function eigvalsPWK!(S::SymTridiagonal{T}; tol = eps(T)) where {T<:Number}
     d = S.dv
     e = S.ev
     n = length(d)
@@ -222,7 +222,7 @@ function eigQL!(
     S::SymTridiagonal{T};
     vectors::Matrix = zeros(T, 0, size(S, 1)),
     tol = eps(T),
-) where {T<:Real}
+) where {T<:Number}
     d = S.dv
     e = S.ev
     n = length(d)
@@ -291,7 +291,7 @@ function eigQR!(
     S::SymTridiagonal{T};
     vectors::Matrix = zeros(T, 0, size(S, 1)),
     tol = eps(T),
-) where {T<:Real}
+) where {T<:Number}
     d = S.dv
     e = S.ev
     n = length(d)
