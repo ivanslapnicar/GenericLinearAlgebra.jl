@@ -102,15 +102,15 @@ function _schur!(
         else
             Hmm = HH[iend, iend]
             Hm1m1 = HH[iend-1, iend-1]
-            if iszero(i % 10)
-                # Use Eispack exceptional shift
-                β = abs(HH[iend, iend-1]) + abs(HH[iend-1, iend-2])
-                d = (Hmm + β)^2 - Hmm * β / 2
-                t = 2 * Hmm + 3 * β / 2
-            else
+            # if iszero(i % 10)
+            #    # Use Eispack exceptional shift
+            #    β = abs(HH[iend, iend-1]) + abs(HH[iend-1, iend-2])
+            #    d = (Hmm + β)^2 - Hmm * β / 2
+            #    t = 2 * Hmm + 3 * β / 2
+            # else
                 d = Hm1m1 * Hmm - HH[iend, iend-1] * HH[iend-1, iend]
                 t = Hm1m1 + Hmm
-            end
+            # end
             # @debug "block start is, block end, d, and t" istart iend d t
 
             if shiftmethod == :Francis
@@ -169,7 +169,7 @@ function singleShiftQR!(
             HH[i+3, i+1] = 0
         end
         rmul!(view(HH, 1:min(i + 3, iend), :), G')
-        # mul!(G, τ)
+        lmul!(G, τ)
     end
     return HH
 end
@@ -230,7 +230,7 @@ function doubleShiftQR!(
                 HH[i+4, i+j] = 0
             end
             rmul!(view(HH, 1:min(i + j + 2, iend), :), G')
-            # mul!(G, τ)
+            lmul!(G, τ)
         end
     end
     return HH
